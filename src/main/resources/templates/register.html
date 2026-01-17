@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7efe7; /* beige */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 420px;
+            margin: 90px auto;
+            background: #fffaf6; /* soft beige-white */
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(70, 10, 25, 0.15);
+            border: 1px solid rgba(128, 0, 32, 0.15);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 22px;
+            color: #800020; /* maroon */
+            font-size: 28px;
+        }
+
+        label {
+            color: #5c1a2b;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            margin-bottom: 14px;
+            border: 1px solid rgba(128, 0, 32, 0.25);
+            border-radius: 10px;
+            font-size: 14px;
+            background: white;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #d84a7a; /* pink */
+            box-shadow: 0 0 0 3px rgba(216, 74, 122, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #d84a7a; /* pink */
+            border: none;
+            color: white;
+            font-size: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            margin-top: 5px;
+        }
+
+        button:hover {
+            background: #b83260;
+        }
+
+        .msg {
+            text-align: center;
+            margin-top: 14px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .error {
+            color: #b83260;
+        }
+
+        .bottom-text {
+            text-align: center;
+            margin-top: 14px;
+            color: #4a2a33;
+        }
+
+        a {
+            color: #b83260;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <h2>Register</h2>
+
+    <form id="registerForm">
+        <label>Email:</label>
+        <input type="email" id="email" required>
+
+        <label>Password:</label>
+        <input type="password" id="password" required>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <p class="msg" id="msg"></p>
+    <p class="bottom-text">Already registered? <a href="/login">Login</a></p>
+</div>
+
+<script>
+    document.getElementById("registerForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const res = await fetch("/api/auth/register", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value
+            })
+        });
+
+        if (res.ok) {
+            document.getElementById("msg").classList.remove("error");
+            document.getElementById("msg").innerText = "Registered ✅ Now login!";
+        } else {
+            document.getElementById("msg").classList.add("error");
+            document.getElementById("msg").innerText = "Register failed ❌";
+        }
+    });
+</script>
+
+</body>
+</html>
